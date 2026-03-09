@@ -1,20 +1,30 @@
-from src.power import power_function
-from src.constants import SAMPLE_CONSTANT
-
+from src.sources.generator_source import GeneratorTaskSource
+from src.sources.file_source import FileTaskSource
+from src.sources.api_source import ApiTaskSource
+from src.services.task_receiver import TaskReceiver
 
 def main() -> None:
     """
-    Обязательнная составляющая программ, которые сдаются. Является точкой входа в приложение
+    Точка входа в приложение
+    Демонстрация возможностей
     :return: Данная функция ничего не возвращает
     """
 
-    target, degree = map(int, input("Введите два числа разделенные пробелом: ").split(" "))
+    receiver = TaskReceiver()
 
-    result = power_function(target=target, power=degree)
+    source1 = GeneratorTaskSource(5)
+    source2 = FileTaskSource("file_source_test.txt")
+    source3 = ApiTaskSource()
 
-    print(result)
+    tasks = receiver.receive(source1)
+    for task in tasks:
+        print(task)
 
-    print(SAMPLE_CONSTANT)
+    print("\n")
+    tasks_from_many_sources = receiver.receive_many([source1, source2, source3])
+    for task in tasks_from_many_sources:
+        print(task)
+
 
 if __name__ == "__main__":
     main()
