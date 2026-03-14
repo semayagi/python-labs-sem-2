@@ -4,13 +4,12 @@ from src.services.task_receiver import TaskReceiver
 from src.models.task import Task
 from typing import List
 
-
+# Violates the contract
 class BadSource:
     pass
-    # не соответствует контракту
-
+    
+# Complies with the contract
 class NormalSource:
-    # соответствует контракту
     def get_tasks(self) -> List[Task]:
         return [
             Task(id=123, payload={"ok": "data1"}),

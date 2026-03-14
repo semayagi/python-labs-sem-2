@@ -2,12 +2,12 @@ from typing import Protocol, Iterable, runtime_checkable
 from src.models.task import Task
 
 
-@runtime_checkable  # для возможности проверки isinstance(obj, TaskSource)
+@runtime_checkable  # To allow checking - isinstance(obj, TaskSource)
 class TaskSource(Protocol):
-    """
-    Контракт источника задач
-    Любой объект с методом get_tasks считается источником
-    """
+    '''
+    Task Source protocol
+    Any object with a get_tasks method is considered a source
+    '''
 
     def get_tasks(self) -> Iterable[Task]:
         ...

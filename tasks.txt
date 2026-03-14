@@ -1,5 +1,5 @@
 1,Samir
 2,is
 3,our
-4,favorite
+4,favourite
 5,teacher!

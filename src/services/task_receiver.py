@@ -4,21 +4,19 @@ from src.contracts.task_source import TaskSource
 from src.models.task import Task
 
 class TaskReceiver:
-    """
-    Сервис приёма задач из разных источников
-    """
+    '''
+    Service for receiving tasks from different sources
+    '''
 
     def receive(self, source: TaskSource) -> List[Task]:
-        # runtime-проверка контракта
-        if not isinstance(source, TaskSource):
+        ''' Method that receives tasks from a source '''
+        if not isinstance(source, TaskSource): # Runtime contract check
             raise TypeError("Source does not implement TaskSource protocol")
         
         return list(source.get_tasks())
     
     def receive_many(self, sources: Iterable[TaskSource]) -> List[Task]:
-        """
-        Приём задач сразу из нескольких источников
-        """
+        ''' Method that receives tasks from several sources simultaneously '''
         tasks: List[Task] = []
 
         for source in sources:

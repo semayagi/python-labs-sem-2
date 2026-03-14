@@ -1,8 +1,8 @@
-from src.sources.api import ApiTaskSource
+from src.sources.api import APITaskSource
 
 
 def test_api_source():
-    source = ApiTaskSource()
+    source = APITaskSource()
     tasks = list(source.get_tasks())
 
     assert len(tasks) == 2

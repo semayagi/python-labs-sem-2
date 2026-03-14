@@ -2,10 +2,10 @@ from typing import Iterable
 
 from src.models.task import Task
 
-class ApiTaskSource:
-    """
-    Заглушка внешнего API 
-    """
+class APITaskSource:
+    '''
+    External API mock
+    '''
 
     def get_tasks(self) -> Iterable[Task]:
         return [
