@@ -30,4 +30,5 @@ python -m src.main
 
 ## Тесты (99% покрытия)
 pytest
+
 pytest --cov
