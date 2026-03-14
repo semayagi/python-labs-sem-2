@@ -8,5 +8,21 @@ class Task:
     Модель задачи
     """
 
-    id: int
-    payload: Any
+    def __init__(self, id: int, payload: Any):
+        self.__id = id
+        
+        
+    @property
+    def id(self):
+        return self.__id
+    
+    @id.setter
+    def id(self, value: int):
+        if not isinstance(value, int):
+            raise TypeError("...")
+        self.__id = value
+    
+    @id.deletter
+	def name(self):
+		print("Deleting name...")
+		del self.__id
