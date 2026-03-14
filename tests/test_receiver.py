@@ -10,6 +10,7 @@ class BadSource:
     # не соответствует контракту
 
 class NormalSource:
+    # соответствует контракту
     def get_tasks(self) -> List[Task]:
         return [
             Task(id=123, payload={"ok": "data1"}),

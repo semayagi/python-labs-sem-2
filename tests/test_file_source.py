@@ -1,5 +1,5 @@
 from pathlib import Path
-from src.sources.file_source import FileTaskSource
+from src.sources.file import FileTaskSource
 
 
 def test_file_source():

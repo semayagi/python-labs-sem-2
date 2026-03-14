@@ -1,4 +1,4 @@
-from src.sources.api_source import ApiTaskSource
+from src.sources.api import ApiTaskSource
 
 
 def test_api_source():

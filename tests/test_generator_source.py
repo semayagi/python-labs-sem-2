@@ -1,4 +1,4 @@
-from src.sources.generator_source import GeneratorTaskSource
+from src.sources.generator import GeneratorTaskSource
 
 
 def test_generator_source():
