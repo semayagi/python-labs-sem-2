@@ -44,5 +44,6 @@ def test_invalid_source():
 def test_many_invalid_source():
     receiver = TaskReceiver()
 
-    with pytest.raises(TypeError):
-        receiver.receive_many([NormalSource(), BadSource()])
+    tasks = receiver.receive_many([NormalSource(), BadSource()])
+
+    assert len(tasks) == 2  # BadSource skipped, NormalSource has 2 tasks
