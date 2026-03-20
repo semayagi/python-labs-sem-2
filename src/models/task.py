@@ -1,24 +1,22 @@
-"""
-Модель задачи платформы обработки задач.
-
-Демонстрирует:
-- Data descriptor (TypedField) — имеет __set__, приоритет выше obj.__dict__
-- Non-data descriptor — только __get__ (пример: обычный метод)
-- @property — частный случай data descriptor (read-only без setter)
-"""
-
 from __future__ import annotations
 
 import datetime
 from typing import Any
 
+from enum import Enum
+
+class Status(Enum):
+    pending = "pending"
+    in_progress = "in_progress"
+    done = "done"
+    cancelled = "cancelled"
 
 # data-descriptor
 class TypedField:
     """
     Data descriptor - checks value type in __set__.
 
-    Has priority above obj.__dict__['payload']
+    Has priority above obj.__dict__['payload'] and non-data descriptors
     """
 
     def __init__(self, expected_type: type, nullable: bool = False) -> None:
@@ -27,16 +25,19 @@ class TypedField:
         self._attr_name: str = ""
 
     def __set_name__(self, owner: type, name: str) -> None:
-        # Python calls this method automatically
-
-        # Python вызывает этот метод автоматически при создании класса.
-        # Сохраняем имя под которым дескриптор объявлен в классе,
-        # чтобы хранить реальное значение в _<name> на экземпляре.
+        # Python calls this method automatically when the class is created, for each field
+        # We save the name under which the field is decalred in the class: _<name>
+        # And store the actual value in it
         self._attr_name = f"_{name}"
 
     def __get__(self, obj: Any, objtype: type | None = None) -> Any:
-        # Если обращаются к дескриптору через класс (не экземпляр) — вернуть сам дескриптор.
-        # Это стандартный паттерн, позволяющий делать Task.payload и получить дескриптор.
+        """
+        Accesed via:
+            - instance - return the attribute value
+            - class - return the descriptor itself
+              This follows the standard pattern that allows viewing
+              Task.payload._expected_type and ._nullable settings
+        """
         if obj is None:
             return self
         return getattr(obj, self._attr_name, None)
@@ -96,9 +97,6 @@ class MissingPayloadKeyError(TaskError):
 
 # ----------- Task model -----------
 
-ALLOWED_STATUSES = {"pending", "in_progress", "done", "cancelled"}
-
-
 class Task:
     """
     Task model of the task processing platform
@@ -122,9 +120,7 @@ class Task:
         self._id = str(id)
         self.payload = payload
         self._created_at = datetime.datetime.now()
-        self._status = "pending"
-
-    # --- @property: calculated and protected attributes ---
+        self._status: Status = Status.pending
 
     @property
     def created_at(self) -> datetime.datetime:
@@ -133,17 +129,17 @@ class Task:
         return self._created_at
 
     @property
-    def status(self) -> str:
+    def status(self) -> Status:
         """ Current task status """
         return self._status
 
     @status.setter
     def status(self, value: str) -> None:
         """ Sets the status checking if the value is allowed """
-        if value not in ALLOWED_STATUSES:
+        if not isinstance(value, Status):
             raise InvalidStatusError(
                 f"Invalid status '{value}'. "
-                f"Allowed statuses: {ALLOWED_STATUSES}"
+                f"Expected a Status enum value (e.g. Status.pending)"
             )
         self._status = value
 
@@ -168,46 +164,3 @@ class Task:
             f"Task(id={self.id!r}, status={self.status!r}, "
             f"priority={self.priority!r}, deadline={self.deadline!r})"
         )
-
-
-# ---------------------------------------------------------------------------
-# Демонстрация
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    # Создание задачи — как и раньше в источниках
-    task = Task(id=1, payload={"priority": 3, "deadline": datetime.date(2025, 12, 31)})
-    print(task)
-
-    # @property: вычисляемые поля из payload
-    print("deadline:", task.deadline)
-    print("priority:", task.priority)
-    print("is_ready:", task.is_ready)
-    print("created_at:", task.created_at)
-
-    # data descriptor: TypedField не даёт записать не-dict в payload
-    try:
-        task.payload = "не словарь"
-    except TypeError as e:
-        print("TypeError:", e)
-
-    # non-data descriptor: ReadOnlyField не даёт менять id
-    try:
-        task.id = "другой_id"
-    except AttributeError as e:
-        print("AttributeError:", e)
-
-    # @property setter: валидация статуса
-    task.status = "in_progress"
-    print("новый статус:", task.status)
-    print("is_ready после смены статуса:", task.is_ready)
-
-    try:
-        task.status = "сломан"
-    except InvalidStatusError as e:
-        print("InvalidStatusError:", e)
-
-    # data descriptor имеет приоритет над __dict__:
-    # даже если записать напрямую в __dict__, дескриптор всё равно вернёт своё
-    task.__dict__["payload"] = {"обход": True}
-    print("payload через дескриптор (игнорирует __dict__):", task.payload)
