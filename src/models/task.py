@@ -116,11 +116,13 @@ class Task:
     payload: dict[str, Any] = TypedField(dict)
     id: str = ReadOnlyField()
 
-    def __init__(self, id: str | int, payload: dict[str, Any]) -> None:
+    def __init__(self, id: str | int, payload: dict[str, Any]) -> None: # created_at: datetime = None, status: Status = None - need to add these if want to read full info about task
         self._id = str(id)
         self.payload = payload
         self._created_at = datetime.datetime.now()
         self._status: Status = Status.pending
+        # self._created_at = created_at | datetime.datetime.now()
+        # self._status: Status = status | Status.pending
 
     @property
     def created_at(self) -> datetime.datetime:
@@ -164,3 +166,8 @@ class Task:
             f"Task(id={self.id!r}, status={self.status!r}, "
             f"priority={self.priority!r}, deadline={self.deadline!r})"
         )
+    
+    def __eq__(self, other: Task) -> bool:
+        if not isinstance(other, Task):
+            return NotImplemented
+        return self.id == other.id and self.payload == other.payload

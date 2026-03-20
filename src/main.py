@@ -1,7 +1,6 @@
 from src.infrastructure.logger import logger
 from src.services.task_receiver import TaskReceiver
 from src.sources.generator import GeneratorTaskSource
-from src.sources.file import FileTaskSource
 from src.sources.api import APITaskSource
 from src.sources.json import JSONTaskSource
 from src.models.task import Task
@@ -10,7 +9,7 @@ from src.models.task import Task
 def display_tasks(tasks: list[Task]): 
     print("==============")
     for task in tasks:
-        print(f"ID: {task.id}, payload: {task.payload}")
+        print(f"ID: {task.id}, payload: {task.payload}, created_at: {task.created_at}, status: {task.status}")
     print("==============")
 
 def main() -> None:
@@ -22,7 +21,7 @@ def main() -> None:
 
     receiver = TaskReceiver()
     while(True):
-        print("1. Generated Task\n2. API\n3. File\n4. JSON File\n5. Quit")
+        print("1. Generated Task\n2. API\n3. JSON File\n4. Quit")
         choice = input("Enter your choice: ").strip()
         logger.info(f"User selected option: {choice}")
         match choice:
@@ -36,10 +35,8 @@ def main() -> None:
             case '2':
                 source = APITaskSource()
             case '3':
-                source = FileTaskSource("file_source.txt")  # I'll add the opportunity to choose later
-            case '4':
                 source = JSONTaskSource("json_source.json")
-            case '5':
+            case '4':
                 break
             # The option to read several sources will be added later
             case _:

@@ -1,7 +1,28 @@
 {
   "tasks": [
-    { "id": "1", "payload": "asd" },
-    { "id": "34", "payload": "sdsaf" },
-    { "id": "909", "payload": "uganda" }
+    {
+      "id": "api-1",
+      "payload": {
+        "priority": 1,
+        "deadline": "2025-06-01",
+        "description": "Sync user data from remote API"
+      }
+    },
+    {
+      "id": "api-2",
+      "payload": {
+        "priority": 3,
+        "deadline": "2025-07-15",
+        "description": "Fetch payment records"
+      }
+    },
+    {
+      "id": "api-3",
+      "payload": {
+        "priority": 2,
+        "deadline": null,
+        "description": "Poll health check endpoint"
+      }
+    }
   ]
 }

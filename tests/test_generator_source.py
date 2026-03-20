@@ -1,4 +1,5 @@
 from src.sources.generator import GeneratorTaskSource
+import datetime
 
 
 def test_generator_source():
@@ -6,4 +7,8 @@ def test_generator_source():
     tasks = list(source.get_tasks())
 
     assert len(tasks) == 3
-    assert tasks[0].id == 0
+    assert tasks[0].id == "0"
+
+    deadline: datetime.date = tasks[2].payload["deadline"]
+
+    assert deadline.year == 2002

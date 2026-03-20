@@ -1,8 +1,10 @@
-import pytest
+import pytest, datetime
 
 from src.services.task_receiver import TaskReceiver
 from src.models.task import Task
 from typing import List
+
+from src.infrastructure.logger import logger
 
 # Violates the contract
 class BadSource:
@@ -12,8 +14,16 @@ class BadSource:
 class NormalSource:
     def get_tasks(self) -> List[Task]:
         return [
-            Task(id=123, payload={"ok": "data1"}),
-            Task(id=321, payload={"ok": "data2"}),
+            Task(id=123, payload={
+                "priority": 1,
+                "deadline": datetime.date(2024, 10, 10),
+                "description": "Money for nothing, Chicks for free"
+            }),
+            Task(id=321,  payload={
+                "priority": 2,
+                "deadline": datetime.date(2023, 1, 29),
+                "description": "We gotta move these microwave ovens"
+            }),
         ]
 
 
@@ -32,8 +42,17 @@ def test_many_valid_source():
     tasks1 = list(source1.get_tasks())
     tasks2 = list(source2.get_tasks())
 
+    logger.info(f"Tasks1: {tasks1}")
+    logger.info(f"Tasks2: {tasks2}")
+
     tasks1.extend(tasks2)
-    assert tasks1 == receiver.receive_many([source1, source2])
+    logger.info(f"Extended tasks: {tasks1}")
+
+    received_tasks = receiver.receive_many([source1, source2])
+    logger.info(f"Received tasks: {received_tasks}")
+    logger.info(f"{type(tasks1)}, {type(received_tasks)}")
+
+    assert tasks1 == received_tasks
 
 def test_invalid_source():
     receiver = TaskReceiver()
