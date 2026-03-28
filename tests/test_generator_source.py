@@ -9,6 +9,6 @@ def test_generator_source():
     assert len(tasks) == 3
     assert tasks[0].id == "0"
 
-    deadline: datetime.date = tasks[2].payload["deadline"]
+    deadline: datetime.date = tasks[2].deadline
 
-    assert deadline.year == 2002
+    assert deadline.year == 2029

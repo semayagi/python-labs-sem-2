@@ -9,7 +9,7 @@ from src.models.task import Task
 def display_tasks(tasks: list[Task]): 
     print("==============")
     for task in tasks:
-        print(f"ID: {task.id}, payload: {task.payload}, created_at: {task.created_at}, status: {task.status}")
+        print(f"ID: {task.id}, description: {task.description}, priority: {task.priority}, created_at: {task.created_at}, deadline: {task.deadline}, status: {task.status}")
     print("==============")
 
 def main() -> None:

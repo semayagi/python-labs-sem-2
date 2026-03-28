@@ -2,27 +2,21 @@
   "tasks": [
     {
       "id": "api-1",
-      "payload": {
-        "priority": 1,
-        "deadline": "2025-06-01",
-        "description": "Sync user data from remote API"
-      }
+      "priority": 1,
+      "deadline": "2025-06-01",
+      "description": "Sync user data from remote API"
     },
     {
       "id": "api-2",
-      "payload": {
-        "priority": 3,
-        "deadline": "2025-07-15",
-        "description": "Fetch payment records"
-      }
+      "priority": 3,
+      "deadline": "2025-07-15",
+      "description": "Fetch payment records"
     },
     {
       "id": "api-3",
-      "payload": {
-        "priority": 2,
-        "deadline": null,
-        "description": "Poll health check endpoint"
-      }
+      "priority": 2,
+      "deadline": "2026-08-15",
+      "description": "Poll health check endpoint"
     }
   ]
 }

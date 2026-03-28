@@ -12,27 +12,21 @@ class APITaskSource:
         tasks = [
             Task(
                 id="api-1",
-                payload={
-                    "priority": 1,
-                    "deadline": datetime.date(2025, 6, 1),
-                    "description": "Sync user data from remote API",
-                },
+                priority=1,
+                deadline=datetime.date(2025, 6, 30),
+                description="Process user data",
             ),
             Task(
                 id="api-2",
-                payload={
-                    "priority": 3,
-                    "deadline": datetime.date(2025, 7, 15),
-                    "description": "Fetch payment records",
-                },
+                priority=3,
+                deadline=datetime.date(2025, 7, 15),
+                description="Fetch payment records",
             ),
             Task(
                 id="api-3",
-                payload={
-                    "priority": 2,
-                    "deadline": None,
-                    "description": "Poll health check endpoint",
-                },
+                priority=2,
+                deadline=datetime.date(2027, 6, 14),
+                description="Poll health check endpoint",
             ),
         ]
  

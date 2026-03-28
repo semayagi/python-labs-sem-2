@@ -13,8 +13,7 @@ class GeneratorTaskSource:
     def get_tasks(self) -> Iterable[Task]:
         ''' Method that implements task generating '''
         for i in range(self._count):
-            yield Task(id=i, payload={
-                                "priority": 1,
-                                "deadline": datetime.date.fromisoformat(f"{2000+i}-01-01"),
-                                "description": f"Generated task №{i}"
-                            })
+            yield Task(id=str(i),  
+                       priority=1, 
+                       deadline=datetime.date.fromisoformat(f"{2027+i}-01-01"), 
+                       description=f"Generated task №{i}")

@@ -14,16 +14,8 @@ class BadSource:
 class NormalSource:
     def get_tasks(self) -> List[Task]:
         return [
-            Task(id=123, payload={
-                "priority": 1,
-                "deadline": datetime.date(2024, 10, 10),
-                "description": "Money for nothing, Chicks for free"
-            }),
-            Task(id=321,  payload={
-                "priority": 2,
-                "deadline": datetime.date(2023, 1, 29),
-                "description": "We gotta move these microwave ovens"
-            }),
+            Task(id="123", priority= 1,deadline=datetime.date(2024, 10, 10), description = "Money for nothing, Chicks for free"),
+            Task(id="321", priority= 2,deadline=datetime.date(2023, 1, 29), description = "We gotta install  microwave ovens"),
         ]
 
 

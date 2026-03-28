@@ -24,12 +24,7 @@ class JSONTaskSource:
         with open(self._filepath, "r", encoding="utf-8") as file:
             data = json.load(file)
             for task in data["tasks"]:
-                payload: dict = task["payload"]
-                if not isinstance(payload, dict):
-                    raise TypeError(
-                        f"Task '{task['id']}': payload must be a dict, got {type(payload).__name__}"
-                    )
-                if payload.get("deadline"):
-                    payload["deadline"] = datetime.date.fromisoformat(payload["deadline"])
-                yield Task(id=task["id"], payload=task["payload"])
+                if task.get("deadline"):
+                    task["deadline"] = datetime.date.fromisoformat(task["deadline"])
+                yield Task(id=task["id"], description=task["description"], priority=task["priority"], deadline=task.get("deadline"))
                 
