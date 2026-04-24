@@ -47,13 +47,15 @@ def main() -> None:
         # tasks = receiver.receive(source)
         # display_tasks(tasks)
         
-        # task_queue = TaskQueue([APITaskSource(), JSONTaskSource("json_source.json"), GeneratorTaskSource(5)])
-        # for task in task_queue:
-        #     if(task.id=="0"):
-        #         break
-        #     print(task)
+        task_queue = TaskQueue([JSONTaskSource("json_source.json"), GeneratorTaskSource(5), APITaskSource()])
+        for task in task_queue:
+            print(task)
 
         # print("\n")
+        
+        # print(sum(task_queue))
+        # print("\n")
+        # print(list(task_queue))
 
         # for task in task_queue:
         #     print(task)
