@@ -5,6 +5,8 @@ from src.sources.api import APITaskSource
 from src.sources.json import JSONTaskSource
 from src.models.task import Task
 
+from src.collections.task_queue import TaskQueue
+
 # For annotations, is it OK to use default "list" instead of "List" from typing lib?
 def display_tasks(tasks: list[Task]): 
     print("==============")
@@ -44,6 +46,19 @@ def main() -> None:
                 print("Invalid input! Input an integer from 1 to 5.\n")
         tasks = receiver.receive(source)
         display_tasks(tasks)
+        
+        task_queue = TaskQueue(tasks)
+        for task in task_queue:
+            print(task)
+            if (task.id == "api-2"):
+                break
+        print("\n")
+        for task in task_queue:
+            print(task)
+            
+        print(sum(task_queue))
+        
+    
 
 
 if __name__ == "__main__":

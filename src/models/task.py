@@ -38,3 +38,18 @@ class Task:
         if not isinstance(other, Task):
             return NotImplemented
         return self.id == other.id
+    
+    
+    def __repr__(self):
+        return f"ID: {self.id}; Description: {self.description}"
+    
+    
+    def __add__(self, other: "Task"):
+        if not isinstance(other, Task):
+            return NotImplemented
+        return Task(self.id + "-" + other.id, self.description + "; " + other.description, max(self.priority, other.priority), max(self.deadline, other.deadline), self.created_at)
+    
+    def __radd__(self, other: "Task"):
+        if other == 0:
+            return self
+        return NotImplemented
