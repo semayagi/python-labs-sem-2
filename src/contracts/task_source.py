@@ -8,6 +8,7 @@ class TaskSource(Protocol):
     Task Source protocol
     Any object with a get_tasks method is considered a source
     '''
-
+    
     def get_tasks(self) -> Iterable[Task]:
         ...
+

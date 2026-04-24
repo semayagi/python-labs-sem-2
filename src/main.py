@@ -44,19 +44,22 @@ def main() -> None:
             case _:
                 logger.warning(f"User entered invalid option: {choice}")
                 print("Invalid input! Input an integer from 1 to 5.\n")
-        tasks = receiver.receive(source)
-        display_tasks(tasks)
+        # tasks = receiver.receive(source)
+        # display_tasks(tasks)
         
-        task_queue = TaskQueue(tasks)
-        for task in task_queue:
-            print(task)
-            if (task.id == "api-2"):
-                break
-        print("\n")
-        for task in task_queue:
-            print(task)
-            
-        print(sum(task_queue))
+        # task_queue = TaskQueue([APITaskSource(), JSONTaskSource("json_source.json"), GeneratorTaskSource(5)])
+        # for task in task_queue:
+        #     if(task.id=="0"):
+        #         break
+        #     print(task)
+
+        # print("\n")
+
+        # for task in task_queue:
+        #     print(task)
+
+
+
         
     
 

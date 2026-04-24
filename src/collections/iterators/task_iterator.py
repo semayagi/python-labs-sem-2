@@ -1,21 +1,19 @@
-from src.models.task import Task
+# from src.contracts.task_source import TaskSource
+# class TaskIterator:
+#     def __init__(self, task_sources: list[TaskSource]):
+#         self.__tasks = []
+#         for source in task_sources:
+#             self.__tasks.extend(source.get_tasks())
+#         self.__index = 0
+        
+#     def __iter__(self):
+#         return self
+        
+#     def __next__(self): 
+#         if self.__index >= len(self.__tasks):
+#             raise StopIteration
+#         task = self.__tasks[self.__index]
+#         self.__index += 1
+#         return task
 
-class TaskIterator:
-    def __init__(self, start: int, end: int, tasks: list[Task]):
-        self.__tasks = tasks
-        self.__start = start
-        self.__end = end
-        self.__cur = start
-        
-    def __iter__(self):
-        return self
-        
-    def __next__(self):        
-        if (self.__cur == self.__end + 1):
-            raise StopIteration
-        index = min(self.__cur, self.__end)
-        self.__cur += 1
-        
-        
-        return self.__tasks[index]
 		

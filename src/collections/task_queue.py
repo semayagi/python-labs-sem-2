@@ -1,25 +1,16 @@
-from src.collections.iterators.task_iterator import TaskIterator
-from src.models.task import Task
+# from src.collections.iterators.task_iterator import TaskIterator
+# from src.models.task import Task
 from src.contracts.task_source import TaskSource
 
 class TaskQueue:
-    def __init__(self, task_source: TaskSource):
-        self.__source = task_source
-        # self.__start = 0
-        # self.__end = len(tasks) - 1
+    def __init__(self, task_sources: list[TaskSource]):
+        self.__sources = task_sources
         
-    # def __getitem__(self, index: int):
-    #     return self.__tasks[index]
-        
-    # def __len__(self):
-    #     return len(self.__tasks)
-
     def __iter__(self):
-        return TaskIterator(start=self.__start, end=self.__end, tasks=self.__tasks)
+        # return TaskIterator(task_sources=self.__sources)
+        for source in self.__sources:
+            for task in source.get_tasks():
+                yield task
 
-    # def __setitem__(self, index: int, task: Task):
-    #     if not isinstance(task, Task):
-    #         return NotImplemented
-    #     self.__tasks[index] = task
         
         

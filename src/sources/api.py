@@ -8,8 +8,8 @@ class APITaskSource:
     External API mock
     '''
 
-    def get_tasks(self) -> Iterable[Task]:
-        tasks = [
+    def __init__(self):
+        self.__tasks = [
             Task(
                 id="api-1",
                 priority=1,
@@ -29,7 +29,11 @@ class APITaskSource:
                 description="Poll health check endpoint",
             ),
         ]
+
+    def get_tasks(self) -> Iterable[Task]:
+        tasks = self.__tasks
  
         tasks[1].status = Status.in_progress
 
-        return tasks
+        for i in range(len(self.__tasks)):
+            yield tasks[i]
