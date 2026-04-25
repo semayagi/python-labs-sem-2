@@ -2,8 +2,8 @@ from src.contracts.task_source import TaskSource
 class TaskIterator:
     def __init__(self, task_sources: list[TaskSource]):
         self.__sources = iter(task_sources)
+        # I am not sure, but the following line should return the iterator and shouldn't calculate the whole get_tasks() list beforehand:
         self.__source = iter(next(self.__sources).get_tasks())
-        self.__source_index = 0
         
     def __iter__(self):
         return self
@@ -12,11 +12,8 @@ class TaskIterator:
         try:
             return next(self.__source)
         except StopIteration:
-            # print("NOO!!! STOP!/")
-            # for source in self.__sources:
-            #     print("SOURCE:: ", source)
             try:
-                self.__source = next(self.__sources)
+                self.__source = iter(next(self.__sources).get_tasks())
                 return next(self.__source)
             except:
                 raise StopIteration
