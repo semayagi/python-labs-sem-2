@@ -8,4 +8,4 @@ def test_api_source():
 
     assert len(tasks) == 3
     assert tasks[0].id == "api-1"
-    assert tasks[1].status == Status.in_progress
+    assert tasks[2].status == Status.in_progress

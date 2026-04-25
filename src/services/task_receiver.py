@@ -4,6 +4,7 @@ from typing import List, Iterable
 from src.contracts.task_source import TaskSource
 from src.models.task import Task
 
+# LEGACY
 class TaskReceiver:
     '''
     Service for receiving tasks from different sources

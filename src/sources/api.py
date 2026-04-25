@@ -33,7 +33,7 @@ class APITaskSource:
     def get_tasks(self) -> Iterable[Task]:
         tasks = self.__tasks
  
-        tasks[1].status = Status.in_progress
+        tasks[2].status = Status.in_progress
 
         for i in range(len(self.__tasks)):
             yield tasks[i]
