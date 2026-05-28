@@ -1,3 +1,4 @@
 from pathlib import Path
 
-LOGGING_DIR = Path("src/log")
+BASE_DIR = Path(__file__).resolve().parent.parent
+LOGGING_DIR = BASE_DIR / "log"
