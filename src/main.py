@@ -6,7 +6,7 @@ from src.handlers.file_save import FileSaveHandler
 from src.handlers.socket_reader import SocketReaderHandler
 
 async def main() -> None:
-    logger.info("Asyncronous application is up.")
+    logger.info("Asynchronous application is up.")
 
     # 1. Init handlers
     file_handler = FileSaveHandler("processed_tasks.txt")
@@ -34,7 +34,7 @@ async def main() -> None:
         for task in test_tasks:
             await executor.add_task(task)
 
-        print("\n SYSTEM IS READY. Switch terminal and execute: connect localhost 1025")
+        print("\n SYSTEM IS READY. Switch terminal and execute: nc 127.0.0.1 1025")
         print("Awaiting connections and finishing background tasks(30 seconds)...")
         await asyncio.sleep(30)
 

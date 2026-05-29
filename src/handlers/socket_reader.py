@@ -26,17 +26,19 @@ class SocketReaderHandler:
 
     async def _handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
         '''OS pings this method during client connection through terminal'''
-        data = await reader.read(100)
-        message = data.decode().strip()
-        addr = writer.get_extra_info('peername')
-        
-        logger.info(f"[SocketHandler] Received data from {addr}: '{message}'")
-        
-        # echo to client
-        writer.write(f"Echo: {message}\n".encode())
-        await writer.drain()
-        writer.close()
-        await writer.wait_closed()
+        try:
+            data = await reader.read(100)
+            message = data.decode().strip()
+            addr = writer.get_extra_info('peername')
+            
+            logger.info(f"[SocketHandler] Received data from {addr}: '{message}'")
+            
+            # echo to client
+            writer.write(f"Echo: {message}\n".encode())
+            await writer.drain()
+        finally:
+            writer.close()
+            await writer.wait_closed()
 
     async def handle(self, task: Task) -> None:
         logger.info(f"[SocketHandler] Network analysis started for task {task.id}...")

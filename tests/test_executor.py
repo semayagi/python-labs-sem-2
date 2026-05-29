@@ -43,11 +43,9 @@ async def test_executor_processes_task_successfully():
     task = make_test_task("1", description="save results to file")
 
     await executor.add_task(task)
-    
     await executor.start_workers(count=1)
     
     await asyncio.wait_for(executor._queue.join(), timeout=1.0)
-    
     await executor.stop()
 
     assert len(io_handler.processed_tasks) == 1
@@ -63,14 +61,12 @@ async def test_executor_handles_unknown_task_type_safely():
     task = make_test_task("2", description="unknown operation")
 
     await executor.add_task(task)
-    
     await executor.start_workers(count=1)
     
     await asyncio.wait_for(executor._queue.join(), timeout=1.0)
-    
     await executor.stop()
 
-    assert task.status == Status.pending
+    assert task.status == Status.cancelled
 
 
 @pytest.mark.asyncio

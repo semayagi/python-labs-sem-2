@@ -13,6 +13,4 @@ class FileSaveHandler:
 
     def _save_to_file(self, task: Task) -> None:
         with open(self.filename, "a", encoding="utf-8") as f:
-            f.write(f"ID: {task.id} | Description: {task.description} | Status: {task.status}\n")
-
-
+            f.write(f"ID: {task.id} | Description: {task.description} | Status: {task.status.value}\n")
