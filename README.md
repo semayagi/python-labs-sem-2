@@ -43,7 +43,7 @@ connect localhost 1025
 ## Запуск
 python -m src.main
 
-## Тесты (92% покрытия)
+## Тесты (90% покрытия)
 pytest
 
 pytest --cov
