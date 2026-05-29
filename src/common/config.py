@@ -23,10 +23,15 @@ LOGGING_CONFIG = {
             "level": "DEBUG",
             "encoding": "utf-8"
         },
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+            "level": "DEBUG",
+        }
     },
     "loggers": {
         "": {
-            "handlers": ["file"],
+            "handlers": ["file", "console"],
             "level": "DEBUG",
             "propagate": True,
         }

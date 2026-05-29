@@ -31,7 +31,7 @@ class Task:
         
     @property
     def is_ready(self) -> bool:
-        """ True if status == pending """
+        ''' True if status == pending '''
         return self.status == Status.pending
     
     def __eq__(self, other: "Task"):

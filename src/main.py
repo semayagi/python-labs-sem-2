@@ -1,83 +1,48 @@
+import asyncio
 from src.infrastructure.logger import logger
-from src.sources.generator import GeneratorTaskSource
-from src.sources.api import APITaskSource
-from src.sources.json import JSONTaskSource
-from src.models.task import Task, Status
+from src.models.task import Task
+from src.services.task_executor import TaskExecutor
+from src.handlers.file_save import FileSaveHandler
+from src.handlers.socket_reader import SocketReaderHandler
 
-from src.collections.task_queue import TaskQueue
+async def main() -> None:
+    logger.info("Asyncronous application is up.")
 
-# For annotations, is it OK to use default "list" instead of "List" from typing lib?
-def display_tasks(tasks: list[Task]): 
-    print("==============")
-    for task in tasks:
-        print(f"ID: {task.id}, description: {task.description}, priority: {task.priority}, created_at: {task.created_at}, deadline: {task.deadline}, status: {task.status}")
-    print("==============")
+    # 1. Init handlers
+    file_handler = FileSaveHandler("processed_tasks.txt")
+    socket_handler = SocketReaderHandler(host="127.0.0.1", port=1025)
 
-def main() -> None:
-    '''
-    Entry point of the application
-    '''
-    logger.info("Program started")
-    print("Welcome to the Task Receiver application!\nNEW FEATURE: Queue with filtration! Collect task sources into one queue and then iterate through it!")
+    # 2. Create task executor
+    executor = TaskExecutor()
+    executor.register_handler("io", file_handler)
+    executor.register_handler("network", socket_handler)
 
-    task_queue = TaskQueue()
-    while(True):
-        print("1. Generated Task\n2. API\n3. JSON File\n4. Show all tasks\n5. Iterate through task queue\n6. Set filtration\n7. Reset filtration\n8. Quit")
-        choice = input("Enter your choice: ").strip()
-        logger.info(f"User selected option: {choice}")
-        match choice:
-            case '1':
-                count = input("Enter the count of tasks to generate: ")
-                logger.info(f"User entered count of tasks to generate: {count}")
-                if not (count.isdigit() and int(count) > 0):
-                    print("Invalid input! Enter a positive integer!\n")
-                    continue
-                task_queue.add(GeneratorTaskSource(int(count)))
-            case '2':
-                task_queue.add(APITaskSource())
-            case '3':
-                task_queue.add(JSONTaskSource("json_source.json"))
-            case '4':
-                for task in task_queue:
-                    print(task)
-            case '5':
-                for task in task_queue:
-                    input(f"{task} > ")
-            case '6':
-                print("Leave blanks empty to choose no filtration.")
-                print("Choose status filter:\n1. Pending\n2. In Progress\n3. Done\n4. Cancelled")
-                status_choice = input("Choose status: ").strip()
-                match status_choice:
-                    case '1':
-                        status_filter = Status.pending
-                    case '2':
-                        status_filter = Status.in_progress
-                    case '3':
-                        status_filter = Status.done
-                    case '4':
-                        status_filter = Status.cancelled
-                    case _:
-                        status_filter = None
+    # 3. Enter socket server context, it begins listesting port
+    async with socket_handler:
+        
+        # 4. Start workers pool (e.g., 3 parallel handlers)
+        await executor.start_workers(count=3)
 
-                priority_choice = input("Choose priority filter (1-5): ").strip()
-                if priority_choice.isdigit() and 1 <= int(priority_choice) <= 5:
-                    priority_filter = int(priority_choice)
-                else:
-                    priority_filter = None
+        # 5. Generate test tasks (imitation of sources)
+        test_tasks = [
+            Task(id="1", description="Save backup to disk", priority=5, deadline=None),
+            Task(id="2", description="Network analysis data", priority=3, deadline=None),
+            Task(id="3", description="Save user logs", priority=2, deadline=None),
+            Task(id="4", description="Network ping status", priority=4, deadline=None),
+        ]
 
-                task_queue.set_filtration(status_filter, priority_filter)
-                print("Filtration set!")
-            case '7':
-                task_queue.reset_filtration()
-                print("Filtration reset!")
-                pass
-            case '8':
-                break
+        for task in test_tasks:
+            await executor.add_task(task)
 
-            # The option to read several sources will be added later
-            case _:
-                logger.warning(f"User entered invalid option: {choice}")
-                print("Invalid input! Input an integer from 1 to 8.\n")
+        print("\n SYSTEM IS READY. Switch terminal and execute: connect localhost 1025")
+        print("Awaiting connections and finishing background tasks(30 seconds)...")
+        await asyncio.sleep(30)
+
+        await executor.stop()
+        logger.info("Program finished.")
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\nApplication was forced to stop by user.")

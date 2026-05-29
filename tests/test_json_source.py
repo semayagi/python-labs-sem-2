@@ -3,7 +3,7 @@ from src.sources.json import JSONTaskSource
 
 def test_json_source():
     file = Path("tasks.json")
-    file.write_text("""
+    file.write_text('''
       {
         "tasks": [
           {
@@ -20,7 +20,7 @@ def test_json_source():
           }
         ]
       }
-      """)
+      ''')
 
     source = JSONTaskSource(str(file))
     tasks = list(source.get_tasks())

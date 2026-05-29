@@ -2,6 +2,8 @@ from src.collections.iterators.task_iterator import TaskIterator
 from src.contracts.task_source import TaskSource
 from src.models.task import Status
 
+# Fixed issues of 3rd Laboratory
+
 class TaskFilterableIterator:
     def __init__(self, task_sources: list[TaskSource], status_filter: Status | None, priority_filter: int | None):
         self.__tasks_gen = (
